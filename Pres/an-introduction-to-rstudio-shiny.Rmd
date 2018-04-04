@@ -1,0 +1,201 @@
+---
+author: "Phil Bowsher"
+title: An Introduction to HTML&nbsp;Widgets for R
+date: "Wed, Oct 4, 2017"
+output: 
+  ioslides_presentation:
+    css: shiny-slides.css
+    logo: images/shiny-logo.png
+    self_contained: no
+    incremental: true
+runtime: shiny
+---
+
+<style type="text/css">
+
+slides > slide:before {
+  font-size: 12pt;
+  content: 'http://shiny.rstudio.com/';
+  position: absolute;
+  text-align: center;
+  bottom: 15px;
+  left: 50%;  
+  margin-left: -300px;
+  width: 600px;
+  line-height: 1.9;
+}
+
+div.img-col{
+  text-align: center;
+  font-size: 14pt;
+}
+
+a {
+  border-bottom: none !important;
+}
+
+.wrapper {
+  margin: 70px auto;
+  position: relative;
+  z-index: 90;
+}
+
+.ribbon-wrapper-green {
+  width: 145px;
+  height: 148px;
+  overflow: hidden;
+  position: absolute;
+  top: -3px;
+  right: -3px;
+}
+
+.ribbon-green {
+  font: bold 15px Sans-Serif;
+  color: #333;
+  text-align: center;
+  text-shadow: rgba(255,255,255,0.5) 0px 1px 0px;
+  -webkit-transform: rotate(45deg);
+  -moz-transform:    rotate(45deg);
+  -ms-transform:     rotate(45deg);
+  -o-transform:      rotate(45deg);
+  position: relative;
+  padding: 7px 0;
+  left: -25px;
+  top: 45px;
+  width: 220px;
+  background-color: #7ADCBF;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#8AACDF), to(#658FBE)); 
+  background-image: -webkit-linear-gradient(top, #8AACDF, #658FBE); 
+  background-image:    -moz-linear-gradient(top, #8AACDF, #658FBE); 
+  background-image:     -ms-linear-gradient(top, #8AACDF, #658FBE); 
+  background-image:      -o-linear-gradient(top, #8AACDF, #658FBE); 
+  color: #6a6340;
+  -webkit-box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
+  -moz-box-shadow:    0px 0px 3px rgba(0,0,0,0.3);
+  box-shadow:         0px 0px 3px rgba(0,0,0,0.3);
+}
+
+.ribbon-green:before, .ribbon-green:after {
+  content: "";
+  border-top:   3px solid #00896e;   
+  border-left:  3px solid transparent;
+  border-right: 3px solid transparent;
+  position:absolute;
+  bottom: -3px;
+}
+
+.ribbon-green:before {
+  left: 0;
+}
+.ribbon-green:after {
+  right: 0;
+}
+</style>
+
+## Preview - Overview of Discussion
+<div class="columns-2">
+ - Overview of HTML Widgets
+ - HTML Widgets Examples
+ - Advance: HTML Widgets in Shiny / R Markdown
+ - Target Audience
+ - Goal of webinar
+ 
+  <div class="img-col">
+   ![htmlwidgets1](htmlwidgets1.png)
+   
+ </div>
+</div>
+
+Tornadoes!!!
+--------------------
+
+<div class="columns-4">![starbucks](starbucks.png)</a>
+   
+ </div>
+
+</div>
+
+## Tornado Analysis
+
+- [NOAA / National Weather Service Shapefile ](http://www.spc.noaa.gov/gis/svrgis/)
+- [Reading spatial files into R with rgdal ](https://cran.r-project.org/web/packages/rgdal/index.html)
+- [Leaflet Example ](http://rstudio.github.io/leaflet/)
+ 
+## HTML Widgets &mdash; R Bindings to JavaScript Libraries
+
+<div class="columns-2">
+<a href="http://www.htmlwidgets.org/index.html">![htmlwidgets](htmlwidgets.png)</a>
+<a href="http://www.htmlwidgets.org/showcase_leaflet.html">![htmlwidgets1](htmlwidgets1.png)</a>
+
+- Used at the R console for data analysis just like conventional R plots (via RStudio Viewer).
+- Seamlessly embedded within R Markdown documents and Shiny web applications.
+- Saved as standalone web pages for ad-hoc sharing via email, Dropbox, etc.
+</div>
+
+## Common Excel Tasks - rpivotTable & DT
+
+<div class="columns-2">
+<a href="http://hafen.github.io/htmlwidgetsgallery/">![rpivottable](rpivottable.png)</a>
+
+- [rpivotTable - Package created by Enzo Martoglio](https://github.com/smartinsightsfromdata/rpivotTable)
+- [DT: An R interface to the DataTables library by RStudio](https://rstudio.github.io/DT/)
+
+</div>
+
+## rbokeh Example
+
+- [Bike Share Stations ](http://data.indy.gov)
+- [rbokeh gmap](http://ryanhafen.com/blog/rbokeh-gmap)
+
+
+<div class="columns-4">![bike](bike.png)</a> </div>
+
+
+## Dygraphs Example
+
+- [FRED® Economic Data](https://fred.stlouisfed.org/series/WASH911UR/downloaddata)
+- [quantmod](http://www.quantmod.com/examples/intro/)
+
+
+<div class="columns-4">![dygraph](dygraph.png)</a> </div>
+
+## Leaflet Example
+
+- [Leaflet Example ](http://rstudio.github.io/leaflet/)
+- [All Starbucks Locations in the US](https://opendata.socrata.com/Business/All-Starbucks-Locations-in-the-US-Map/ddym-zvjk)
+- [opendata.socrata.com](https://opendata.socrata.com/)
+
+
+<div class="columns-4">![htmlwidgets2](htmlwidgets2.png)</a> </div>
+
+## HTML Widgets &mdash; Leaflet Example
+
+<div class="columns-2">
+<a href="http://www.htmlwidgets.org/index.html">![htmlwidgets2](htmlwidgets2.png)</a>
+
+- Viewing Starbucks Locations
+- Loads Data Sets
+
+</div>
+
+## HTML Widgets &mdash; Dygraphs in Shiny & RMarkdown
+
+<div class="columns-2">
+<a href="https://beta.rstudioconnect.com/jjallaire/htmlwidgets-dygraphs/">![flexdashboard](flexdashboard.png)</a>
+
+- [flexdashboard Example](http://rmarkdown.rstudio.com/flexdashboard/)
+
+</div>
+
+## Q/A...
+
+<div class="columns-4">![yoda4](yoda4.png)</a>
+
+</div>
+
+## Additional Resources
+
+ - Shiny Developer Center - http://shiny.rstudio.com
+ - [Stack Overflow - "shiny" tag](http://stackoverflow.com/questions/tagged/shiny)
+ - ["Shiny Discuss" Mailing List](https://groups.google.com/d/forum/shiny-discuss)
+ - ***Come meet us!***
