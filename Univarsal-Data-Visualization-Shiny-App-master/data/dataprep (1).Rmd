@@ -1,0 +1,77 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+Now that we have looked at our initial data, we need to use this data to make a model. We will be looking at how employment, average weekly hours worked, and compensation can affect labor productivity. It is important to know how these interact because businesses need to know how to get the best work out of their employees and how to run efficiently. It would be helpful to know if employment affects productivity so that we can take that into consideration as the job market gets better or worse. It's helpful for average weekly hours worked so that we can see if people work better with more or less hours, and adjust the work week to fit works best. Finally compensation is important because we want to see if people work harder the more they are compensated so that companies can consider this when deciding how much to pay employees.   
+
+Before we do this, we need to load all the libraries we will be using. This creates a function that will install the libraries if needed and then load the libraries for us to use. It also loads in everything from part 1 of the project, and installs some tools so that we can use an api to gather more data.
+
+```{r message=FALSE, error=FALSE, warning=FALSE, results='hide'}
+library(rjson)
+library(blsAPI)
+library(ggplot2)
+library(tidyverse)
+library(caret)
+```
+
+### Gather More Data
+We are going to load in more data that we can use in our project. This time it will be coming from an api made by the Bureau of Labor Statistics. As with the first part this is a reliable source. However, before I load in the data I am going to create a function that will create tibbles from json for this api. This will leave out the footnotes of the data, because they were creating problems and weren't data that was going to be used. The built in R function weren't working well for the format that the api gives us, so I decided it would be easier to make my own. I decided to make it into a function so that later if we wanted more data from this api, we can just use the function again.
+```{r}
+creat_tib_from_json <- function(json, num) {
+  temp <- tibble('year' = character(), 'period'= character(), 'periodName'= character(), 'value'= character())
+  for (i in json$Results$series[[num]][[2]]) {
+    
+      temp <- bind_rows(temp, tibble('year' = i$year, 'period'= i$period, 'periodName'= i$periodName, 'value'= i$value))
+    }
+  temp$year <- as_factor(temp$year)
+  temp$period <- as_factor(temp$period)
+  temp$periodName <- as_factor(temp$periodName)
+  temp$value <- as.integer(temp$value)
+  return(temp)
+}
+```
+
+Now that we have the function we will make a call to the api, use the fromJson function to convert it, then run it in our function to create a tibble that we can use.
+```{r message=FALSE, error=FALSE, warning=FALSE, results='hide'}
+library("blsAPI")
+payload <- list('seriesid'=c('LAUCN360610000000004', 'LAUCN360610000000006'), 'startyear'='2009', 'endyear'='2019')
+response <- blsAPI(payload)
+json <- fromJSON(response)
+
+unemployed_total <- creat_tib_from_json(json, 1)
+
+unemployed_total %>% rename(unemployed = value)
+
+
+labor_force <- creat_tib_from_json(json, 2) 
+
+labor_force %>% rename(labor.force = value)
+# avg_hourly_earnings <- creat_tib_from_json(json, 3)
+
+
+
+```
+
+The first dataset is looking at all employees in the private sector, and is seasonally adjusted. Each number is in the the thousands of employees.
+```{r}
+left_join(unemployed_total, labor_force)
+```
+
+The second dataset is looking at the average weekly hours worked of all employees in the private sector and is seasonally adjusted.
+```{r}
+labor_force
+```
+
+The third dataset is looking at the average hourly earnings of all employees in the private sector and is seasonally adjusted.
+```{r}
+unemployed_total %>% write_csv('unemployed_total.csv')
+
+unemployed_total
+```
+For all of these datasets the year is the year of the observation, the period is the number of the month, the periodName is the name of the month, latest designates whether it is the most recent observation or not, and value contains the actual measurment (number of employees, average weekly hours worked, and average hourly earnings).    
+
+These will be useful to have so that we can see the actual numbers instead of just the adjusted ones from the previous dataset. These also break it down by months instead of just looking at it annually.   
+

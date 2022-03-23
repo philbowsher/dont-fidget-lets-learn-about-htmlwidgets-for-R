@@ -1,0 +1,72 @@
+---
+title: CSV Explorer
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    social: menu
+    source_code: embed
+runtime: shiny
+---
+
+```{r global, include=FALSE}
+library(tidyverse)
+library(mgcv)
+library(plotly)
+library(DT)
+
+data <- read_csv("https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/datasets/ToothGrowth.csv")
+
+```
+
+# Page 1
+Inputs {.sidebar}
+-----------------------------------------------------------------------
+
+```{r}
+
+sliderInput('sampleSize', 'Sample Size', min=1, max=nrow(data), value = nrow(data)/2)
+checkboxInput('jitter', 'Jitter', value = TRUE)
+checkboxInput('smooth', 'Smooth', value = TRUE)
+selectInput('x', 'X', names(data))
+selectInput('y', 'Y', names(data), names(data)[[2]])
+selectInput('color', 'Color', c('None', names(data)))
+selectInput('facet_row', 'Facet Row',
+            c(None='.', names(data[sapply(data, is.character)])))
+selectInput('facet_col', 'Facet Column',
+            c(None='.', names(data[sapply(data, is.character)])))
+
+```
+
+Outputs
+-----------------------------------------------------------------------
+
+### Graph
+```{r}
+
+dataset <- reactive({
+  data[sample(nrow(data), input$sampleSize),]
+})
+renderPlot({
+  p <- ggplot(dataset(), aes_string(x=input$x, y=input$y)) + geom_point()
+  if (input$color != 'None')
+    p <- p + aes_string(color=input$color)
+  facets <- paste(input$facet_row, '~', input$facet_col)
+  if (facets != '. ~ .')
+    p <- p + facet_grid(facets)
+  if (input$jitter)
+    p <- p + geom_jitter()
+  if (input$smooth)
+    p <- p + geom_smooth()
+  print(p)
+})
+
+```
+
+# Page 2
+```{r}
+
+renderDataTable({
+  dataset()
+}, options = list(scrollY = "750px"))
+
+```

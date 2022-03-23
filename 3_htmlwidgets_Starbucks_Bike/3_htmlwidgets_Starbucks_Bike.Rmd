@@ -1,0 +1,30 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(tidyverse)
+library(readr)
+library(leaflet)
+bike <- read_csv("Bike_Share_Stations.csv")
+
+bike <- mutate(bike, Brand = "Bike") %>% mutate(Col = "red") %>% rename( Latitude = LATITUDE, Longitude =LONGITUDE, Name = STATION_NAME)
+
+starbucks <- read_csv("data.csv")
+
+starbucks_IN <- starbucks %>%
+  filter(Country== 'US', State=='IN') %>% mutate(Col = "blue") %>% select(Brand, `Store Number`, `Ownership Type`, City,	State,	Zip, Country, Coordinates,	Latitude,	Longitude, Name, Col)
+
+# Works but not needed
+# starbucks_bikes <- full_join(starbucks_IN, bike, by = c('Brand', 'Latitude', 'Longitude', 'Col', 'Name'))
+
+starbucks_bikes <- bind_rows(starbucks_IN, bike)
+
+leaflet() %>% addTiles() %>% setView(-86.164367, 39.764500, zoom = 12) %>% 
+
+addCircleMarkers(data = starbucks_bikes, lat = ~ Latitude, lng = ~ Longitude, popup = starbucks_bikes$Name, color = starbucks_bikes$Col) %>%
+  addPopups(-86.164367, 39.764500, 'The <b> Indiana Convention Center</b>') 
+```
+

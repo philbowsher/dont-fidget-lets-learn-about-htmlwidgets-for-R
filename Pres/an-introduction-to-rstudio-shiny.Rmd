@@ -7,7 +7,6 @@ output:
     css: shiny-slides.css
     logo: images/shiny-logo.png
     self_contained: no
-    incremental: true
 runtime: shiny
 ---
 

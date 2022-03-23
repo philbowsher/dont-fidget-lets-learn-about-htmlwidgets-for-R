@@ -20,7 +20,7 @@ shinyServer(
       
       # Using leaflet to create the map
       leaflet() %>% addTiles()  %>% 
-        addMarkers(data = sub, 
+        addCircleMarkers(data = sub, 
                    lat = ~ Latitude, 
                    lng = ~ Longitude, 
                    popup = paste("State:", sub$State, "<br>",

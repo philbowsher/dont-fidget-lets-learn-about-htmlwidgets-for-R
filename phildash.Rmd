@@ -1,0 +1,53 @@
+---
+title: "Untitled"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(dygraphs)
+library(ggplot2)
+library(plotly)
+library(DT)
+library(leaflet)
+library(crosstalk)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+
+
+
+leaflet() %>% addTiles() %>%
+  addRectangles(
+    lng1=-118.456554, lat1=34.078039,
+    lng2=-118.436383, lat2=34.062717,
+    fillColor = "transparent"
+  )
+```
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+
+dygraph(nhtemp, main = "New Haven Temperatures") %>% 
+  dyRangeSelector(dateWindow = c("1920-01-01", "1960-01-01"))
+```
+
+### Chart C
+
+```{r}
+datatable(iris, options = list(pageLength = 5))
+```
+

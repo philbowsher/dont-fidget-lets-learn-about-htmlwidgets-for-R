@@ -1,0 +1,102 @@
+---
+title: "`r params$dynamictitle`"
+date: "`r params$reportdate`"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    logo: "logo.png"
+    favicon: "logo.png"
+params:
+  reportdate: !r Sys.Date()
+  dynamictitle: "Indy Coders Dashboard"
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+
+library(tidyverse)
+library(magrittr)
+library(stringr)
+
+# for 1
+library(leaflet)
+
+#for 2
+library(rbokeh)
+
+#for 3, 4
+library(quantmod)
+library(dygraphs)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+
+starbucks <- read_csv("data.csv")
+
+
+starbucks_IN <- starbucks %>%
+  filter(Country== 'US', State=='IN')%>% 
+  select(Brand, `Store Number`, `Ownership Type`, City,	State,	Zip, Country, Coordinates,	Latitude,	Longitude, Name)
+
+
+leaflet() %>% addTiles() %>% setView(-86.164367, 39.764500, zoom = 12) %>% 
+
+addCircleMarkers(data = starbucks_IN, lat = ~ Latitude, lng = ~ Longitude, popup = starbucks_IN$Name) %>%
+  addPopups(-86.164367, 39.764500, 'The <b> Indiana Convention Center</b>')
+```
+
+### Chart B
+
+```{r}
+
+bike <- read_csv("Bike_Share_Stations.csv")
+
+bike <- mutate(bike, Brand = "Bike") %>% mutate(Col = "red") %>% rename( Latitude = LATITUDE, Longitude =LONGITUDE, Name = STATION_NAME)
+
+starbucks <- read_csv("data.csv")
+
+starbucks_IN <- starbucks %>%
+  filter(Country== 'US', State=='IN') %>% mutate(Col = "blue") %>% select(Brand, `Store Number`, `Ownership Type`, City,	State,	Zip, Country, Coordinates,	Latitude,	Longitude, Name, Col)
+
+# Works but not needed
+# starbucks_bikes <- full_join(starbucks_IN, bike, by = c('Brand', 'Latitude', 'Longitude', 'Col', 'Name'))
+
+starbucks_bikes <- bind_rows(starbucks_IN, bike)
+
+leaflet() %>% addTiles() %>% setView(-86.164367, 39.764500, zoom = 12) %>% 
+
+addCircleMarkers(data = starbucks_bikes, lat = ~ Latitude, lng = ~ Longitude, popup = starbucks_bikes$Name, color = starbucks_bikes$Col) %>%
+  addPopups(-86.164367, 39.764500, 'The <b> Indiana Convention Center</b>') 
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart C
+
+```{r include = FALSE}
+getSymbols("INDI918URN", src = "FRED")
+```
+
+```{r}
+names(INDI918URN) = "rate"
+dygraph(INDI918URN, main = "Unemployment Rate in Indianapolis-Carmel-Anderson, IN")
+```
+
+### Chart D
+
+```{r include = FALSE}
+getSymbols("LLY", from = "2014-01-01", auto.assign=TRUE)
+```
+
+```{r}
+dygraph(LLY[,2:4], main = "Eli Lilly Stock Prices", group = "stocks") %>%  
+  dyRangeSelector() %>%
+  dySeries(c("LLY.Low", "LLY.Close", "LLY.High"), label = "LLY")
+```
