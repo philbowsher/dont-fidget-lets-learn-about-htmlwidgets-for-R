@@ -38,7 +38,6 @@ starbucks_MA <- starbucks %>%
 
 
 leaflet() %>% addTiles() %>% setView(-71.085159, 42.366440, zoom = 12) %>% 
-  addTiles() %>% 
   addCircleMarkers(data = starbucks_MA, lat = ~ Latitude, lng = ~ Longitude, popup = starbucks_MA$Name) %>%
   addPopups(-71.085159, 42.366440, 'the <b> spot</b>')
 
