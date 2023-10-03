@@ -20,7 +20,7 @@ chartSeries(prices, theme = chartTheme("white", bg.col = "white"))
 ```{r}
 
 
-prices <- round(getSymbols('ANTM', auto.assign = FALSE), 2)
+prices <- round(getSymbols('ELV', auto.assign = FALSE), 2)
 close <- Cl(last(prices))
 open <- Op(last(prices))
 
@@ -41,15 +41,15 @@ chartSeries(prices, theme = chartTheme("white", bg.col = "white"))
 library(dygraphs)
 library(quantmod)
 
-getSymbols(c("LLY", "ANTM", "CMI"), from = "2014-01-01", auto.assign=TRUE)
+getSymbols(c("LLY", "ELV", "CMI"), from = "2014-01-01", auto.assign=TRUE)
 
 dygraph(LLY[,2:4], main = "Stock Prices", group = "stocks") %>%  
   dyRangeSelector() %>%
   dySeries(c("LLY.Low", "LLY.Close", "LLY.High"), label = "LLY")
 
-dygraph(ANTM[,2:4], main = "Stock Prices", group = "stocks") %>%  
+dygraph(ELV[,2:4], main = "Stock Prices", group = "stocks") %>%  
   dyRangeSelector() %>%
-  dySeries(c("ANTM.Low", "ANTM.Close", "ANTM.High"), label = "ANTM")
+  dySeries(c("ELV.Low", "ELV.Close", "ELV.High"), label = "ELV")
 
 dygraph(CMI[,2:4], main = "Stock Prices", group = "stocks") %>%  
   dyRangeSelector() %>%
@@ -58,14 +58,14 @@ dygraph(CMI[,2:4], main = "Stock Prices", group = "stocks") %>%
 
 ```{r}
 
-getSymbols(c("LLY", "ANTM", "CMI"), from = "2014-01-01", auto.assign=TRUE)
+getSymbols(c("LLY", "ELV", "CMI"), from = "2014-01-01", auto.assign=TRUE)
 
-stocks <- cbind(LLY[,2:4], ANTM[,2:4], CMI[,2:4])
+stocks <- cbind(LLY[,2:4], ELV[,2:4], CMI[,2:4])
 
-dygraph(stocks, main = "Lilly, Anthem and Cummins Share Prices") %>%
+dygraph(stocks, main = "Lilly, Elevance and Cummins Share Prices") %>%
   dyRangeSelector() %>% 
   dySeries(c("LLY.Low", "LLY.Close", "LLY.High"), label = "LLY") %>%
-  dySeries(c("ANTM.Low", "ANTM.Close", "ANTM.High"), label = "ANTM") %>% dySeries(c("CMI.Low", "CMI.Close", "CMI.High"), label = "CMI")
+  dySeries(c("ELV.Low", "ELV.Close", "ELV.High"), label = "ELV") %>% dySeries(c("CMI.Low", "CMI.Close", "CMI.High"), label = "CMI")
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
