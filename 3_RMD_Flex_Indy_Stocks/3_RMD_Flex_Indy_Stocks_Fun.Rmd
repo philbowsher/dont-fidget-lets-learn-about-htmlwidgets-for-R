@@ -7,7 +7,7 @@ output:
     social: menu
     source_code: embed
 params:
-  symbol: [LLY, ANTM, CMI]
+  symbol: [LLY, ELV, CMI]
   reportdate: !r Sys.Date()
   dynamictitle: "Dygraphs Linked Time Series"
 ---

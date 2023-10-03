@@ -8,7 +8,7 @@ output:
     source_code: embed
 params:
   symbol1: LLY
-  symbol2: ANTM
+  symbol2: ELV
   symbol3: CMI
   reportdate: !r Sys.Date()
   dynamictitle: "Dygraphs Linked Time Series"
